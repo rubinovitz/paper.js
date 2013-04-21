@@ -4,18 +4,27 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Animated Star</title>
 	<link rel="stylesheet" href="../css/style.css">
+        <style>
+            body {
+                background-color: #000;
+            }
+        </style>
 	<script type="text/javascript" src="../../dist/paper.js"></script>
 	<script type="text/paperscript" canvas="canvas">
 		var layer = project.activeLayer;
 
 		var values = {
-			count: 34,
+			count: 32,
 			points: 32
 		};
 
+                var j = -1;
+
+                var colors = ['red','orange','yellow','green','blue','indigo', 'violet'];
+
 		for (var i = 0; i < values.count; i++) {
 			var path = new Path({
-				fillColor: i % 2 ? 'red' : 'black',
+				fillColor: colors[i % 8],
 				closed: true
 			});
 
@@ -32,9 +41,12 @@
 		}
 
 		function onFrame(event) {
+                    if (event.count % 137 == 0) {
+                        j = j * -1 * sin(event.count);
+                    }
 			for (var i = 0; i < values.count; i++) {
 				var item = layer.children[i];
-				var angle = (values.count - i) * Math.sin(event.count / 128) / 10;
+				var angle = j * (values.count/10 - i) * Math.sin(event.count / 256) / 120;
 				item.rotate(angle);
 			}
 		}
