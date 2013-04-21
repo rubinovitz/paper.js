@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Lines</title>
+	<link rel="stylesheet" href="../css/style.css">
+	<script type="text/javascript" src="../../dist/paper.js"></script>
+	<script type="text/paperscript" canvas="canvas">
+
+// Create a rectangle shaped path with its top left point at
+// {x: 75, y: 75} and a size of {width: 75, height: 75}
+
+var path = new Path.Circle(view.center, 50);
+path.strokeColor = 'black';
+var t = 0;
+var j = true;
+
+
+var text = new PointText(view.center);
+text.fillColor = 'black';
+text.strokeWidth = '8';
+text.content = 'Breathe out';
+text.scale(1.5);
+
+
+function onFrame(event) {
+    t += event.delta;
+    text.opacity = Math.cos(t/14 * Math.PI);
+    if (t > 7) {
+        t -= 7;
+        j = !j;
+        text.content = j ? "Breathe out" : "Breathe in";
+        //text.opacity = 1;
+    }
+    // Each frame, rotate the path by 3 degrees:
+    var desired_radius = 200 * Math.cos(event.time/14 * Math.PI);
+
+    var scale = desired_radius / path.bounds.width;
+
+    //text.content = t.toString();
+    
+    path.scale(scale);
+}
+	</script>
+</head>
+<body style='background-color:white'>
+	<canvas id="canvas" resize></canvas>
+</body>
+</html>
